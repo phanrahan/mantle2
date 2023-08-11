@@ -1,10 +1,12 @@
-from magma import *
+import magma as m
 
 # generate 48 Mhz clock
-SB_HFOSC = DeclareCircuit("SB_HFOSC", 
-                            'CLKHFPU', In(Bit), # power up
-                            'CLKHFEN', In(Bit), # enable
-                            'CLKHF', Out(Clock)
+class SB_HFOSC(m.Circuit):
+    io = m.IO(
+        CLKHFPU=m.In(m.Bit), # power up
+        CLKHFEN=m.In(m.Bit), # enable
+        CLKHF=  m.Out(m.Clock)
+    )
                          )
 
 # parameters

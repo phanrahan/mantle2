@@ -1,17 +1,18 @@
-from magma import *
+import magma as m
 
-SB_IO= DeclareCircuit("SB_IO", 
-                        'PACKAGE_PIN', In(Bit), # should be inout
-                        'CLOCK_ENABLE', In(Bit),
-                        'INPUT_CLOCK', In(Bit),
-                        'OUTPUT_CLOCK', In(Bit),
-                        'OUTPUT_ENABLE', In(Bit),
-                        'LATCH_INPUT_VALUE', In(Bit),
-                        'D_IN_0', In(Bit), # rising
-                        'D_IN_1', In(Bit), # falling
-                        'D_OUT_0', Out(Bit), # rising
-                        'D_OUT_1', Out(Bit) # falling
-                     )
+class SB_IO(m.Circuit):
+    io = m.IO(
+        PACKAGE_PIN=m.In(m.Bit), # should be inout
+        CLOCK_ENABLE=m.In(m.Bit),
+        INPUT_CLOCK=m.In(m.Bit),
+        OUTPUT_CLOCK=m.In(m.Bit),
+        OUTPUT_ENABLE=m.In(m.Bit),
+        LATCH_INPUT_VALUE=m.In(m.Bit),
+        D_IN_0=m.In(m.Bit),       # rising
+        D_IN_1=m.In(m.Bit),       # falling
+        D_OUT_0=m.Out(m.Bit),     # rising
+        D_OUT_1=m.Out(m.Bit)      # falling
+     )
 
 #module top (input PIO1_02, output D1);
 #wire y;

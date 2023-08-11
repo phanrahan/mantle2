@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from magma import *
+import magma as m
 from .simulation import gen_sb_ram40_4k_sim
 
 __all__  = ['SB_RAM40_4K']
@@ -7,21 +7,24 @@ __all__  = ['SB_RAM40_4K']
 __all__ += ['RAMB', 'ROMB']
 
 # posedge read clock, posedge write clock
-SB_RAM40_4K = DeclareCircuit("SB_RAM40_4K",
-    "RDATA", Out(Bits[ 16 ]),
-    "RADDR", In(Bits[ 11 ]),
-    "RCLK",  In(Clock),
-    "RCLKE", In(Enable),
-    "RE",    In(Enable),
-    "WCLK",  In(Clock),
-    "WCLKE", In(Enable),
-    "WE",    In(Enable),
-    "WADDR", In(Bits[ 11 ]),
-    "MASK",  In(Bits[ 16 ]),
-    "WDATA", In(Bits[ 16 ]),
-    stateful=True,
-    simulate=gen_sb_ram40_4k_sim(prc=True, pwc=True),
-    coreir_lib='ice40')
+class SB_RAM40_4K(m.Circuit):
+    io = m.IO(
+        RDATA=m.Out(m.Bits[ 16 ]),
+        RADDR=m.In(m.Bits[ 11 ]),
+        RCLK= m.In(m.Clock),
+        RCLKE=m.In(m.Enable),
+        RE=   m.In(m.Enable),
+        WCLK= m.In(m.Clock),
+        WCLKE=m.In(m.Enable),
+        WE=   m.In(m.Enable),
+        WADDR=m.In(m.Bits[ 11 ]),
+        MASK= m.In(m.Bits[ 16 ]),
+        WDATA=m.In(m.Bits[ 16 ]),
+        #stateful=True,
+        #simulate=gen_sb_ram40_4k_sim(prc=True, pwc=True),
+        #coreir_lib='ice40'
+    )
+
 
 # posedge read clock, negedge write clock
 # negedge read clock, posedge write clock
@@ -61,7 +64,7 @@ def init(rom,N,mode=0):
 
 def wireaddr(addr, n):
     for i in range(n):
-        wire(0, addr[10-i])
+        m.wire(0, addr[10-i])
     return addr[0:11-n]
 
 def _RAMB(height, width, rom=None, readonly=False):
@@ -88,14 +91,14 @@ def _RAMB(height, width, rom=None, readonly=False):
                             RDATA[8], RDATA[10], RDATA[12], RDATA[14]])
         if not readonly:
             WDATA = ram40.WDATA
-            wire(0,WDATA[1])
-            wire(0,WDATA[3])
-            wire(0,WDATA[5])
-            wire(0,WDATA[7])
-            wire(0,WDATA[9])
-            wire(0,WDATA[11])
-            wire(0,WDATA[13])
-            wire(0,WDATA[15])
+            m.wire(0,WDATA[1])
+            m.wire(0,WDATA[3])
+            m.wire(0,WDATA[5])
+            m.wire(0,WDATA[7])
+            m.wire(0,WDATA[9])
+            m.wire(0,WDATA[11])
+            m.wire(0,WDATA[13])
+            m.wire(0,WDATA[15])
             ram40.WDATA = array([WDATA[0], WDATA[2], WDATA[4], WDATA[6],
                                 WDATA[8], WDATA[10], WDATA[12], WDATA[14]])
             ram40.WADDR = wireaddr(ram40.WADDR, 2)
@@ -108,18 +111,18 @@ def _RAMB(height, width, rom=None, readonly=False):
         ram40.RDATA = array([RDATA[1], RDATA[5], RDATA[9], RDATA[13]])
         if not readonly:
             WDATA = ram40.WDATA
-            wire(0,WDATA[0])
-            wire(0,WDATA[2])
-            wire(0,WDATA[3])
-            wire(0,WDATA[4])
-            wire(0,WDATA[6])
-            wire(0,WDATA[7])
-            wire(0,WDATA[8])
-            wire(0,WDATA[10])
-            wire(0,WDATA[11])
-            wire(0,WDATA[12])
-            wire(0,WDATA[14])
-            wire(0,WDATA[15])
+            m.wire(0,WDATA[0])
+            m.wire(0,WDATA[2])
+            m.wire(0,WDATA[3])
+            m.wire(0,WDATA[4])
+            m.wire(0,WDATA[6])
+            m.wire(0,WDATA[7])
+            m.wire(0,WDATA[8])
+            m.wire(0,WDATA[10])
+            m.wire(0,WDATA[11])
+            m.wire(0,WDATA[12])
+            m.wire(0,WDATA[14])
+            m.wire(0,WDATA[15])
             ram40.WDATA = array([WDATA[1], WDATA[5], WDATA[9], WDATA[13]])
             ram40.WADDR = wireaddr(ram40.WADDR, 1)
     elif n == 2048: # 2048x2
@@ -130,29 +133,29 @@ def _RAMB(height, width, rom=None, readonly=False):
         ram40.RDATA = array([RDATA[3], RDATA[11]])
         if not readonly:
             WDATA = ram40.WDATA
-            wire(0,WDATA[0])
-            wire(0,WDATA[1])
-            wire(0,WDATA[2])
-            wire(0,WDATA[4])
-            wire(0,WDATA[5])
-            wire(0,WDATA[6])
-            wire(0,WDATA[7])
-            wire(0,WDATA[8])
-            wire(0,WDATA[9])
-            wire(0,WDATA[10])
-            wire(0,WDATA[12])
-            wire(0,WDATA[13])
-            wire(0,WDATA[14])
-            wire(0,WDATA[15])
+            m.wire(0,WDATA[0])
+            m.wire(0,WDATA[1])
+            m.wire(0,WDATA[2])
+            m.wire(0,WDATA[4])
+            m.wire(0,WDATA[5])
+            m.wire(0,WDATA[6])
+            m.wire(0,WDATA[7])
+            m.wire(0,WDATA[8])
+            m.wire(0,WDATA[9])
+            m.wire(0,WDATA[10])
+            m.wire(0,WDATA[12])
+            m.wire(0,WDATA[13])
+            m.wire(0,WDATA[14])
+            m.wire(0,WDATA[15])
             ram40.WDATA = array([WDATA[3], WDATA[11]])
 
     if readonly:
-        wire( enable(0), ram40.WE    )
-        wire( array(11*[0]), ram40.WADDR )
-        wire( array(16*[0]), ram40.WDATA )
-    wire(enable(0 if readonly else 1), ram40.WCLKE )
-    wire(enable(1), ram40.RCLKE)
-    wire(array(16*[0]), ram40.MASK)
+        m.wire( enable(0), ram40.WE    )
+        m.wire( array(11*[0]), ram40.WADDR )
+        m.wire( array(16*[0]), ram40.WDATA )
+    m.wire(enable(0 if readonly else 1), ram40.WCLKE )
+    m.wire(enable(1), ram40.RCLKE)
+    m.wire(array(16*[0]), ram40.MASK)
     if readonly:
         return AnonymousCircuit("RADDR", ram40.RADDR,
                                 "RDATA", ram40.RDATA,

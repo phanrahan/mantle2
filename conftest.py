@@ -2,7 +2,7 @@ import pytest
 import magma
 
 def pytest_addoption(parser):
-    parser.addoption("--target", action="store", default="coreir")
+    parser.addoption("--target", action="store", default="ice40")
 
 def pytest_configure(config):
     target = config.getoption('--target')
@@ -19,7 +19,7 @@ def pytest_collection_modifyitems(items):
         elif "verilog" in item.nodeid:
             item.add_marker(pytest.mark.verilog)
         else:
-            item.add_marker(pytest.mark.coreir)
+            pass
 
 
 @pytest.fixture(autouse=True)
@@ -34,5 +34,5 @@ def mantle_test():
     from magma import clear_cachedFunctions
     clear_cachedFunctions()
 
-    magma.frontend.coreir_.ResetCoreIR()
+    #magma.frontend.coreir_.ResetCoreIR()
     magma.generator.reset_generator_cache()

@@ -1,49 +1,88 @@
 from collections.abc import Sequence
-from magma import *
-from magma.compatibility import IntegerTypes
-from magma.bitutils import lutinit, int2seq
-from ..ice40.PLB import SB_LUT4, A0, A1, A2, A3
+from hwtypes import IntegerTypes, BitVector, seq2int
+import magma as m
+from .PLB import SB_LUT4, A0, A1, A2, A3
 
 __all__  = ['LUT1', 'LUT2', 'LUT3', 'LUT4']
 __all__ += ['LUT5', 'LUT6', 'LUT7', 'LUT8']
 __all__ += ['LUTN', 'LUT']
-__all__ += ['A0', 'A1', 'A2', 'A3']
+__all__ += ['Mux2']
+
+BV16 = BitVector[16]
+
+def lutinit(val) -> BV16:
+    if isinstance(val, Sequence):
+        val = seg2int(val)
+    return BV16(val)
 
 
-def Mux2(**kwargs):
-    """Construct a Mux with 2 1-bit inputs."""
-    MUX2DATA = (~A2&A0)|(A2&A1)
-    lut = LUT3(MUX2DATA, **kwargs)
-    return AnonymousCircuit("I0", lut.I0,
-                            "I1", lut.I1,
-                            "S", lut.I2,
-                            "O", lut.O)
+"""
+Convenience wrappers around SB_LUT4
+"""
 
-def LUT1(rom, **kwargs):
-    lut = SB_LUT4(LUT_INIT=(lutinit(rom,1<<1)[0], 16),**kwargs)
-    wire(0, lut.I1)
-    wire(0, lut.I2)
-    wire(0, lut.I3)
-    return AnonymousCircuit("I0", lut.I0, "O", lut.O)
+class LUT1(m.Generator2):
+    def __init__(self, contents):
+        self.io = m.IO(
+            I0=m.In(m.Bit),
+            O=m.Out(m.Bit),
+        )
+        self.io.O @= SB_LUT4(LUT_INIT=lutinit(contents))(
+            self.io.I0,
+            0,
+            0,
+            0
+        )
 
-def LUT2(rom, **kwargs):
-    lut = SB_LUT4(LUT_INIT=(lutinit(rom,1<<2)[0], 16), **kwargs)
-    wire(0, lut.I2)
-    wire(0, lut.I3)
-    return AnonymousCircuit("I0", lut.I0, "I1", lut.I1, "O", lut.O)
+class LUT2(m.Generator2):
+    def __init__(self, contents):
+        self.io = m.IO(
+            I0=m.In(m.Bit),
+            I1=m.In(m.Bit),
+            O=m.Out(m.Bit),
+        )
+        self.io.O @= SB_LUT4(LUT_INIT=lutinit(contents))(
+            self.io.I0,
+            self.io.I1,
+            0,
+            0
+        )
 
-def LUT3(rom, **kwargs):
-    lut = SB_LUT4(LUT_INIT=(lutinit(rom,1<<3)[0], 16), **kwargs)
-    wire(0, lut.I3)
-    return AnonymousCircuit("I0", lut.I0, "I1", lut.I1, "I2", lut.I2, "O", lut.O)
 
-def LUT4(rom, **kwargs):
-    return SB_LUT4(LUT_INIT=lutinit(rom,1<<4), **kwargs)
+class LUT3(m.Generator2):
+    def __init__(self, contents):
+        self.io = m.IO(
+            I0=m.In(m.Bit),
+            I1=m.In(m.Bit),
+            I2=m.In(m.Bit),
+            O=m.Out(m.Bit),
+        )
+        self.io.O @= SB_LUT4(LUT_INIT=lutinit(contents))(
+            self.io.I0,
+            self.io.I1,
+            self.io.I2,
+            0
+        )
+
+class LUT4(m.Generator2):
+    def __init__(self, contents):
+        self.io = m.IO(
+            I0=m.In(m.Bit),
+            I1=m.In(m.Bit),
+            I2=m.In(m.Bit),
+            I3=m.In(m.Bit),
+            O=m.Out(m.Bit),
+        )
+        self.io.O @= SB_LUT4(LUT_INIT=lutinit(contents))(
+            self.io.I0,
+            self.io.I1,
+            self.io.I2,
+            self.io.I3,
+        )
 
 def LUT5(rom, **kwargs):
     if isinstance(rom, IntegerTypes):
         rom = int2seq(rom, 32)
-    I0, I1, I2, I3, I4 = In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)()
+    I0, I1, I2, I3, I4 = m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)()
     lut = fork( LUT4(rom[ 0:16]), LUT4(rom[16:32]) )
     lut(I0, I1, I2, I3)
     mux = Mux2()
@@ -59,7 +98,7 @@ def LUT5(rom, **kwargs):
 def LUT6(rom, **kwargs):
     if isinstance(rom, IntegerTypes):
         rom = int2seq(rom, 64)
-    I0, I1, I2, I3, I4, I5 = In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)()
+    I0, I1, I2, I3, I4, I5 = m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)()
     lut = fork( LUT5(rom[ 0:32]), LUT5(rom[32:64]))
     mux = Mux2()
     lut(I0, I1, I2, I3, I4)
@@ -75,7 +114,7 @@ def LUT6(rom, **kwargs):
 def LUT7(rom, **kwargs):
     if isinstance(rom, IntegerTypes):
         rom = int2seq(rom, 128)
-    I0, I1, I2, I3, I4, I5, I6 = In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)()
+    I0, I1, I2, I3, I4, I5, I6 = m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)()
     lut = fork( LUT6(rom[ 0:64]), LUT6(rom[64:128]))
     mux = Mux2()
     lut(I0, I1, I2, I3, I4, I5)
@@ -92,7 +131,7 @@ def LUT7(rom, **kwargs):
 def LUT8(rom, **kwargs):
     if isinstance(rom, IntegerTypes):
         rom = int2seq(rom, 256)
-    I0, I1, I2, I3, I4, I5, I6, I7 = In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)(), In(Bit)()
+    I0, I1, I2, I3, I4, I5, I6, I7 = m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)(), m.In(m.Bit)()
     lut = fork( LUT7(rom[ 0:128]), LUT7(rom[128:256]))
     mux = Mux2()
     lut(I0, I1, I2, I3, I4, I5, I6)
@@ -147,4 +186,14 @@ def LUTN(rom, n=None, **kwargs):
 
 LUT = LUTN
 
+
+
+def Mux2(**kwargs):
+    """Construct a Mux with 2 1-bit inputs."""
+    MUX2DATA = (~A2&A0)|(A2&A1)
+    lut = LUT3(MUX2DATA, **kwargs)
+    return AnonymousCircuit("I0", lut.I0,
+                            "I1", lut.I1,
+                            "S", lut.I2,
+                            "O", lut.O)
 

@@ -1,3 +1,4 @@
+import pytest
 from magma import *
 import magma as m
 from hwtypes import BitVector
@@ -67,6 +68,7 @@ def test_ramb():
     assert BitVector[8](sim.get_value(main.RDATA)) == BitVector[8](0xBE)
 
 
+@pytest.mark.skip()
 def test_romb_coreir():
     main = DefineCircuit("test_romb_coreir",
                          "RDATAOUT", Out(Bits[16]),

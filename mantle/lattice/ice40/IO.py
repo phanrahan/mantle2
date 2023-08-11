@@ -1,5 +1,5 @@
-from magma import *
-from ..ice40.IOB import SB_IO
+import magma as m
+from .IOB import SB_IO
 
 __all__ = ['IBuf', 'OBuf']
 
@@ -8,15 +8,15 @@ __all__ = ['IBuf', 'OBuf']
 #
 def IBuf(pin, **kwargs):
     io = SB_IO(**kwargs)
-    wire(pin, io.PACKAGE_PIN)
-    return AnonymousCircuit("O", io.D_IN_0);
+    m.wire(pin, io.PACKAGE_PIN)
+    return m.AnonymousCircuit("O", io.D_IN_0);
     
 #
 # SB_IO #(.PIN_TYPE(6'b01_0110)) out ( .PACKAGE_PIN(D1), .D_OUT_0(y) );
 #
 def OBuf(pin, **kwargs):
     io = SB_IO(**kwargs)
-    wire(pin, io.PACKAGE_PIN)
-    return AnonymousCircuit("I", io.D_OUT_0);
+    m.wire(pin, io.PACKAGE_PIN)
+    return m.AnonymousCircuit("I", io.D_OUT_0);
     
 

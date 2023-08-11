@@ -1,40 +1,44 @@
-from magma import *
-from magma.backend.verilog import bstr
+import magma as m
 
 __all__ = ['SB_PLL', 'SB_PLL40_CORE']
 
-SB_PLL40_CORE = DeclareCircuit('SB_PLL40_CORE',
-            "REFERENCECLK", In(Clock),
-            "RESETB", In(Bit),
-            "BYPASS", In(Bit),
-            "PLLOUTCORE", Out(Bit),
-            "PLLOUTGLOBAL", Out(Clock),
-            coreir_lib='ice40')
 
-def SB_PLL( freqout, freqin=12000000 ):
+class SB_PLL40_CORE(m.Circuit):
+    io = m.IO(
+        REFERENCECLK=m.In(m.Clock),
+        RESETB=m.In(m.Bit),
+        BYPASS=m.In(m.Bit),
+        PLLOUTCORE=m.Out(m.Bit),
+        PLLOUTGLOBAL=m.Out(m.Clock)
+        #coreir_lib='ice40'
+    )
+
+class SB_PLL(m.Generator2):
 
     """Instantiate a PLL"""
+    def __init__( self, freqout, freqin=12000000 ):
 
-    divr, divf, divq, filter = findparams(freqin, freqout)
+        self.io = m.IO( I=m.In(m.Bit), O=m.Out(m.Bit) )
 
-    params = {}
-    params["FEEDBACK_PATH"] = "SIMPLE"
-    params["PLLOUT_SELECT"] = "GENCLK"
-    # Reference clock divider (div+1) [0, ..., 15]
-    params["DIVR"] = (divr, 4)
-    # Feedback divider (div+1) [0, ..., 63]
-    params["DIVF"] = (divf, 7)
-    # VCO divider (divq+1) [0, ..., 6]
-    params["DIVQ"] = (divq, 3)
-    params["FILTER_RANGE"] = (filter, 3)
+        divr, divf, divq, filter = findparams(freqin, freqout)
 
-    pll = SB_PLL40_CORE(**params)
+        params = {}
+        params["FEEDBACK_PATH"] = "SIMPLE"
+        params["PLLOUT_SELECT"] = "GENCLK"
+        # Reference clock divider (div+1) [0, ..., 15]
+        params["DIVR"] = (divr, 4)
+        # Feedback divider (div+1) [0, ..., 63]
+        params["DIVF"] = (divf, 7)
+        # VCO divider (divq+1) [0, ..., 6]
+        params["DIVQ"] = (divq, 3)
+        params["FILTER_RANGE"] = (filter, 3)
 
-    wire(1, pll.RESETB)
-    wire(0, pll.BYPASS)
+        pll = SB_PLL40_CORE(**params)
 
-    return AnonymousCircuit("I", pll.REFERENCECLK,
-                            "O", pll.PLLOUTGLOBAL)
+        m.wire(1, pll.RESETB)
+        m.wire(0, pll.BYPASS)
+        pll.REFERENCECLK @= self.io.I
+        self.io.O = pll.PLLOUTGLOBAL
 
 def filterrange(freqin, divr, divf):
     pfd = freqin / (divr + 1)
@@ -108,8 +112,8 @@ def findparams(freqin, freqout):
 
 
 if __name__ == '__main__':
-    d = DefineCircuit('main', "CLKIN", In(Bit), "CLKOUT", Out(Bit))
+    d = m.DefineCircuit('main', "CLKIN", In(Bit), "CLKOUT", Out(Bit))
     pll = SB_PLL(25000000, 12000000)
-    wire(d.CLKIN, pll.I)
-    wire(pll.O, d.CLKOUT)
-    EndCircuit()
+    m.wire(d.CLKIN, pll.I)
+    m.wire(pll.O, d.CLKOUT)
+    m.EndCircuit()

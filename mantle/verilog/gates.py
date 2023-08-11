@@ -1,4 +1,4 @@
-from magma import *
+import magma as m
 
 __all__  = ['And']
 __all__ += ['NAnd']
@@ -9,57 +9,51 @@ __all__ += ['NXOr']
 __all__ += ['Not']
 __all__ += ['Buf']
 
-def ins(n=2):
-    l = []
+def args(n=2):
+    d = {"O":m.Out(m.Bit)}
     for i in range(n):
-        l.append('')
-        l.append(In(Bit))
-    return l
-
-def DefineAnd(n=2):
-    return DeclareCircuit(*(['and', '', Out(Bit)] + ins(n)))
-
-def And(n=2, **kwargs):
-    return DefineAnd(n)(**kwargs)
+        d[f"I{i}"] = m.In(m.Bit)
+    return d
 
 
-def DefineNAnd(n=2):
-    return DeclareCircuit(*(['nand', '', Out(Bit)] + ins(n)))
+class And(m.Generator2):
+    def __init__(self, n=2, **kwargs):
+        self.name = f"And{n}"
+        self.io = m.IO(**args(n))
 
-def NAnd(n=2, **kwargs):
-    return DefineNAnd(n)(**kwargs)
-
-
-def DefineOr(n=2):
-    return DeclareCircuit(*(['or', '', Out(Bit)] + ins(n)))
-
-def Or(n=2, **kwargs):
-    return DefineOr(n)(**kwargs)
+class NAnd(m.Generator2):
+    def __init__(self, n=2, **kwargs):
+        self.name = f"NAnd{n}"
+        self.io = m.IO(**args(n))
 
 
-def DefineNOr(n=2):
-    return DeclareCircuit(*(['nor', '', Out(Bit)] + ins(n)))
+class Or(m.Generator2):
+    def __init__(self, n=2, **kwargs):
+        self.name = f"Or{n}"
+        self.io = m.IO(**args(n))
 
-def NOr(n=2, **kwargs):
-    return DefineNOr(n)(**kwargs)
-
-
-def DefineXOr(n=2):
-    return DeclareCircuit(*(['xor', '', Out(Bit)] + ins(n)))
-
-def XOr(n=2, **kwargs):
-    return DefineXOr(n)(**kwargs)
+class NOr(m.Generator2):
+    def __init__(self, n=2, **kwargs):
+        self.name = f"NOr{n}"
+        self.io = m.IO(**args(n))
 
 
-def DefineNXOr(n=2):
-    return DeclareCircuit(*(['nxor', '', Out(Bit)] + ins(n)))
+class XOr(m.Generator2):
+    def __init__(self, n=2, **kwargs):
+        self.name = f"XOr{n}"
+        self.io = m.IO(**args(n))
 
-def NXOr(n=2, **kwargs):
-    return DefineNXOr(n)(**kwargs)
+class NXOr(m.Generator2):
+    def __init__(self, n=2, **kwargs):
+        self.name = f"NXOr{n}"
+        self.io = m.IO(**args(n))
 
 
-Not = DeclareCircuit('not', '', Out(Bit), '', In(Bit))
-Buf = DeclareCircuit('buf', '', Out(Bit), '', In(Bit))
+class Not(m.Generator2):
+    def __init__(self, **kwargs):
+        self.io = m.IO(I=m.In(m.Bit), O=m.Out(m.Bit))
 
 
-
+class Buf(m.Generator2):
+    def __init__(self, **kwargs):
+        self.io = m.IO(I=m.In(m.Bit), O=m.Out(m.Bit))
