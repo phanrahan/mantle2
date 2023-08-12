@@ -83,26 +83,28 @@ def _DFF(has_ce=False, has_reset=False, edge=True, sync=True):
                 else:
                     return SB_DFFN
 
-def Not():
+def _Not():
     """Not gate - 1-bit input."""
     return LUT1(~A0)
 
+#
 # TODO: add async=True, edge=True (also negedge)
 #
 def DFF(init=0, has_ce=False, has_reset=False, edge=True, sync=True, **kwargs):
 
-    ff = _get_DFF(has_ce, has_reset, edge, sync)(**kwargs)
+    ff = _DFF(has_ce, has_reset, edge, sync)(**kwargs)
 
     I = ff.D
     O = ff.Q
 
-    # ice40 flip-flops are always initialized to 0
+    # ice40 flip-flops are initialized to 0 by default
+    #  this code emulates initializing them to 1
     if init:
         # if init=1, then insert Not before and after the flip-flop
-        luti = Not()
-        luto = Not()
-        wire(luti.O, ff.D)
-        wire(ff.Q, luto.I0)
+        luti = _Not()
+        luto = _Not()
+        ff.D @= luti.O
+        luto.I0 @= ff.Q
         I = luti.I0
         O = luto.O
 
@@ -116,78 +118,6 @@ def DFF(init=0, has_ce=False, has_reset=False, edge=True, sync=True, **kwargs):
 
     args += ['O', O]
 
-    return AnonymousCircuit(args)
+    return m.AnonymousCircuit(args)
 
 FF = DFF
-
-
-def SRFF(init=0, has_ce=False, edge=True, sync=True, **kwargs):
-
-    """A S-R flip-flop."""
-
-    dff = FF( init=init, has_ce=has_ce, edge=edge, sync=sync, **kwargs)
-    lut = LUT3( (~I1&~I2&I0)|(I1&~I2), **kwargs )
-    dff(lut)
-
-    wire(dff.O, lut.I0)
-
-    args = []
-    if has_ce:
-        args += ['CE', dff.CE]
-    args += ["S", lut.I1, "R", lut.I2, 'CLK', dff.CLK, "O", dff.O]
-
-    return AnonymousCircuit(args)
-
-
-
-def RSFF(init=0, has_ce=False, edge=True, sync=True, **kwargs):
-
-    """A R-S flip-flop."""
-
-    dff = FF( init=init, has_ce=has_ce, edge=edge, sync=sync, **kwargs)
-    lut = LUT3( (~I1&~I2&I0)|(I1&~I2), **kwargs )
-    dff(lut)
-
-    wire(dff.O, lut.I0)
-
-    args = []
-    if has_ce:
-        args += ['CE', dff.CE]
-    args += ["R", lut.I2, "S", lut.I1, 'CLK', dff.CLK, "O", dff.O]
-
-    return AnonymousCircuit(args)
-
-
-def JKFF(has_ce=False, has_reset=False, edge=True, sync=True, **kwargs):
-
-    """A J-K flip-flop."""
-
-    dff = FF(has_ce=has_ce, has_reset=has_reset, edge=edge, sync=sync, **kwargs)
-    lut = LUT3( (~I0&I1)|(I0&~I2), **kwargs )
-    dff(lut)
-
-    wire(dff.O, lut.I0)
-
-    args = ["J", lut.I1, "K", lut.I2, "O", dff.O, 'CLK', dff.CLK]
-    if has_ce:     args += ['CE', dff.CE]
-    if has_reset:  args += ['RESET', dff.R]
-    #if has_set:    args += ['SET', dff.S]
-    return AnonymousCircuit(*args)
-
-
-def TFF(has_ce=False, has_reset=False, edge=True, sync=True, **kwargs):
-
-    """A T flip-flop."""
-
-    tff = FF(has_ce=has_ce, has_reset=has_reset, edge=edge, sync=sync, **kwargs)
-    lut = LUT2( I0^I1, **kwargs )
-    tff(lut)
-
-    wire(tff.O, lut.I0)
-
-    args = ["I", lut.I1, "O", tff.O, "CLK", tff.CLK]
-    if has_ce:    args += ['CE', dff.CE]
-    if has_reset: args += ['RESET', dff.R]
-    #if has_set:   args += ['SET', dff.S]
-    return AnonymousCircuit(*args)
-

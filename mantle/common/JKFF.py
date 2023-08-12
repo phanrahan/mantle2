@@ -1,5 +1,5 @@
 import magma as m
-from .FF import DFF
+from .DFF import DFF
 from .LUT import LUT3, A0, A1, A2
 
 
