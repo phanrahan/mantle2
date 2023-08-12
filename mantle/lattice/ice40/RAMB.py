@@ -63,8 +63,8 @@ class SB_RAM40_4K(m.Circuit):
 def init(rom,N,mode=0):
     # INIT_%x 256 bits = 32 bytes = 64 nibbles
     params = OrderedDict({})
-    params['WRITE_MODE'] = mode
-    params['READ_MODE'] = mode
+    params['WRITE_MODE'] = ht.BitVector[2](mode)
+    params['READ_MODE'] = ht.BitVector[2](mode)
 
     # M is the number of high (>8) address values
     #  e.g. if N == 8, then there are 2 high address values
@@ -80,7 +80,7 @@ def init(rom,N,mode=0):
             v |= bit << b
         key = 'INIT_%X' % i
         #params[key] = "256'h%064x" % v
-        params[key] = (v, 256)
+        params[key] = ht.BitVector[256](v)
     return params
 
 def wireaddr(addr, n):

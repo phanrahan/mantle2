@@ -1,11 +1,14 @@
 import pytest
-import magma as m
 from hwtypes import BitVector
+import magma as m
+from magma.testing.utils import check_gold
+
 from mantle.lattice.ice40.RAMB import ROMB, RAMB
 
 
+
 def test_romb():
-    main = m.DefineCircuit("test_romb",
+    main = m.DefineCircuit("main",
                          "RDATAOUT", m.Out(m.Bits[ 8 ]),
                          "CLK", m.In(m.Clock)) # FIXME: hack
     romb = ROMB(512, 8, [0b00000001, 0b11111111] + [0] * 510)
@@ -16,6 +19,9 @@ def test_romb():
     m.wire(romb.RDATA, main.RDATAOUT)
     m.EndCircuit()
 
+    m.compile("build/test_romb", main, output="mlir-verilog")
+    assert check_gold(__file__, "test_romb.v")
+
     #sim = PythonSimulator(main, clock=main.CLK)
     #sim.evaluate()
 
@@ -25,7 +31,7 @@ def test_romb():
 
 
 def test_ramb():
-    main = m.DefineCircuit("test_ramb",
+    main = m.DefineCircuit("main",
                          "RDATA", m.Out(m.Bits[ 8 ]),
                          "WDATA", m.In(m.Bits[ 8 ]),
                          "WE",   m.In(m.Enable),
@@ -41,6 +47,9 @@ def test_ramb():
     m.wire(ramb.RDATA, main.RDATA)
     m.wire(ramb.WDATA, main.WDATA)
     m.EndCircuit()
+
+    m.compile("build/test_ramb", main, output="mlir-verilog")
+    assert check_gold(__file__, "test_ramb.v")
 
     #sim = PythonSimulator(main, clock=main.CLK)
     #sim.set_value(main.WE, False)
