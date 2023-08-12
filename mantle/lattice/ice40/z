@@ -1,0 +1,80 @@
+def DefineDFF(has_ce=False, has_reset=False, edge=True, sync=True):
+    # has_set not supported
+    has_set = False
+
+    # By default
+    #  not connecting a wire to D defaults to 0
+    #  not connecting a wire to C defaults to 0
+    #  not connecting a wire to R defaults to 0
+    #  not connecting a wire to E defaults to 1
+    #   this is better than connecting a 1 to E,
+    #   which causes that signal to be generated
+    if edge:
+        # rising edge
+        if sync:
+            # synchronous reset
+            if has_ce:
+                if   has_reset:
+                    return SB_DFFESR
+                elif has_set:
+                    return SB_DFFESS
+                else:
+                    return SB_DFFE
+            else:
+                if   has_reset:
+                    return SB_DFFSR
+                elif has_set:
+                    return SB_DFFSS
+                else:
+                    return SB_DFF
+        else:
+            # asynchronous reset
+            if has_ce:
+                if   has_reset:
+                    return SB_DFFER
+                elif has_s:
+                    return SB_DFFES
+                else:
+                    return SB_DFFE
+            else:
+                if   has_reset:
+                    return SB_DFFR
+                elif has_set:
+                    return SB_DFFS
+                else:
+                    return SB_DFF
+    else:
+        # falling edge
+        if sync:
+            # synchronous reset
+            if has_ce:
+                if   has_reset:
+                    return SB_DFFNESR
+                elif has_set:
+                    return SB_DFFNESS
+                else:
+                    return SB_DFFNE
+            else:
+                if   has_reset:
+                    return SB_DFFNSR
+                elif has_set:
+                    return SB_DFFNSS
+                else:
+                    return SB_DFFN
+        else:
+            # asynchronous reset
+            if has_ce:
+                if   has_reset:
+                    return SB_DFFNER
+                elif has_set:
+                    return SB_DFFNES
+                else:
+                    return SB_DFFNE
+            else:
+                if   has_reset:
+                    return SB_DFFNR
+                elif has_set:
+                    return SB_DFFNS
+                else:
+                    return SB_DFFN
+

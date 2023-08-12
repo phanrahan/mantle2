@@ -1,17 +1,17 @@
 import pytest
 import magma as m
 from magma.testing.utils import check_gold
-from .simulation import simulate_sb_carry
+#from .simulation import simulate_sb_carry
 
 # Implements (I0&I1)|(I1&I2)|(I2&I0)
 SB_CARRY = m.DeclareCircuit('SB_CARRY',
                "I0", m.In(m.Bit), # must be the same as SB_LUT4 I1 to pack
                "I1", m.In(m.Bit), # must be the same as SB_LUT4 I2 to pack
                "CI", m.In(m.Bit), # must be from previous SB_LUT4 to pack
-               "CO", m.Out(m.Bit),
-               stateful=False,
-               simulate=simulate_sb_carry,
-               coreir_lib="ice40")
+               "CO", m.Out(m.Bit))
+               #stateful=False,
+               #simulate=simulate_sb_carry,
+               #coreir_lib="ice40")
 
 
 @pytest.mark.skip()

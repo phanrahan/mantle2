@@ -1,4 +1,6 @@
+import hwtypes as ht
 import magma as m
+
 
 class SB_IO(m.Circuit):
     io = m.IO(
@@ -12,7 +14,8 @@ class SB_IO(m.Circuit):
         D_IN_1=m.In(m.Bit),       # falling
         D_OUT_0=m.Out(m.Bit),     # rising
         D_OUT_1=m.Out(m.Bit)      # falling
-     )
+    )
+    param_types = {"PIN_TYPE": ht.BitVector[4]}
 
 #module top (input PIO1_02, output D1);
 #wire y;

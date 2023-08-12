@@ -2,7 +2,7 @@ import hwtypes as ht
 
 from magma.bit import Bit
 from magma.circuit import Circuit
-from magma.clock import Clock
+from magma.clock import Clock, Reset, Enable
 from magma.interface import IO
 from magma.t import In, Out
 
@@ -52,9 +52,269 @@ class SB_CARRY(Circuit):
 
 
 class SB_DFF(Circuit):
+    io = IO(
+        C=In(Clock),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+
+# Positive edge versions
+
+# DFF - D Flip-Flop
+class SB_DFF(Circuit):
     """D Flip-Flop"""
     io = IO(
         C=In(Clock),
         D=In(Bit),
         Q=Out(Bit)
     )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=False, r=False, s=False, n=False),
+    #coreir_lib="ice40")
+
+class SB_DFFE(Circuit):
+    """DFF w/ Clock enable"""
+    io = IO(
+        C=In(Clock),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=False, r=False, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFSR(Circuit):
+    '''DFF w/ Synchronous Reset'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=True, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFR(Circuit):
+    '''DFF w/ Asynchronous Reset'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=False, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+# DFF w/ Synchronous Set
+class SB_DFFSS(Circuit):
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=True, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFS(Circuit):
+    '''DFF w/ Asynchronous Set'''
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=False, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFESR(Circuit):
+    '''DFF w/ Synchronous Reset, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=True, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFER(Circuit):
+    '''DFF w/ Asynchronous Reset, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=False, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFESS(Circuit):
+    '''DFF w/ Synchronous Set, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=True, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFES(Circuit):
+    '''DFF w/ Asynchronous Set, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=False, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+# Negative edge versions
+
+class SB_DFFN(Circuit):
+    io = IO(
+        C=In(Clock),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+
+# Positive edge versions
+
+# DFF - D Flip-Flop
+class SB_DFFN(Circuit):
+    """D Flip-Flop"""
+    io = IO(
+        C=In(Clock),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=False, r=False, s=False, n=False),
+    #coreir_lib="ice40")
+
+class SB_DFFNE(Circuit):
+    """DFF w/ Clock enable"""
+    io = IO(
+        C=In(Clock),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=False, r=False, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNSR(Circuit):
+    '''DFF w/ Synchronous Reset'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=True, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNR(Circuit):
+    '''DFF w/ Asynchronous Reset'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=False, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+# DFF w/ Synchronous Set
+class SB_DFFNSS(Circuit):
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=True, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNS(Circuit):
+    '''DFF w/ Asynchronous Set'''
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=False, sy=False, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNESR(Circuit):
+    '''DFF w/ Synchronous Reset, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=True, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNER(Circuit):
+    '''DFF w/ Asynchronous Reset, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        R=In(Reset),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=False, r=True, s=False, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNESS(Circuit):
+    '''DFF w/ Synchronous Set, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=True, r=False, s=True, n=False),
+    #coreir_lib="ice40"
+
+class SB_DFFNES(Circuit):
+    '''DFF w/ Asynchronous Set, Clock enable'''
+    io = IO(
+        C=In(Clock),
+        S=In(Bit),
+        E=In(Enable),
+        D=In(Bit),
+        Q=Out(Bit)
+    )
+    #stateful=True,
+    #simulate=gen_sb_dff_sim(ce=True, sy=False, r=False, s=True, n=False),
+    #coreir_lib="ice40"

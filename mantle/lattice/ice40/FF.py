@@ -1,20 +1,9 @@
-from collections.abc import Sequence
 import magma as m
-from .PLB import SB_DFF, \
-                 SB_DFFR, SB_DFFS, SB_DFFE, \
-                 SB_DFFSR, SB_DFFSS, SB_DFFES, \
-                 SB_DFFESS, D_DFFESR
+from .PLB import *
 from .LUT import LUT1, LUT2, LUT3, A0
 
-__all__   = ['DefineDFF', 'DFF']
-__all__  += ['SRFF', 'RSFF', 'JKFF', 'TFF']
-__all__  += ['FF']
 
-def Not():
-    """Not gate - 1-bit input."""
-    return LUT1(~A0)
-
-def DefineDFF(has_ce=False, has_reset=False, edge=True, sync=True):
+def _DFF(has_ce=False, has_reset=False, edge=True, sync=True):
     # has_set not supported
     has_set = False
 
@@ -94,12 +83,15 @@ def DefineDFF(has_ce=False, has_reset=False, edge=True, sync=True):
                 else:
                     return SB_DFFN
 
-#
+def Not():
+    """Not gate - 1-bit input."""
+    return LUT1(~A0)
+
 # TODO: add async=True, edge=True (also negedge)
 #
 def DFF(init=0, has_ce=False, has_reset=False, edge=True, sync=True, **kwargs):
 
-    ff = DefineDFF(has_ce, has_reset, edge, sync)(**kwargs)
+    ff = _get_DFF(has_ce, has_reset, edge, sync)(**kwargs)
 
     I = ff.D
     O = ff.Q

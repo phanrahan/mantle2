@@ -1,14 +1,17 @@
 # Programmable logic block functions
 from .PLB import *
+from .LUT import *
+from .FF  import *
 
 # Input/output functions
 from .IOB import *
-
-# Block RAM functions
-from .RAMB import *
+from .IO import *
 
 # PLL
 from .PLL import *
+
+# Block RAM functions
+# from .RAMB import *
 
 FAMILY = 'ice40'
 
