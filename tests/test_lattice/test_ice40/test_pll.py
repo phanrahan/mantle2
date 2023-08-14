@@ -1,10 +1,10 @@
 import magma as m
-from magma.testing.utils import check_gold
+from check import check_ice40
 
 from mantle.lattice.ice40.PLL import SB_PLL
 
 
-def test_sb_pll():
+def test_pll():
 
     class Top(m.Circuit):
         io = m.IO(
@@ -21,5 +21,4 @@ def test_sb_pll():
         io.PLLOUTCORE @= pll.PLLOUTCORE
         io.PLLOUTGLOBAL @= pll.PLLOUTGLOBAL
 
-    m.compile("build/test_sb_pll", Top, output="mlir-verilog")
-    assert check_gold(__file__, "test_sb_pll.v")
+    check_ice40(__file__, 'test_pll', Top)

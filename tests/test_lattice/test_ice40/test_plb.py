@@ -1,8 +1,8 @@
 import hwtypes as ht
-
 import magma as m
+from check import check_ice40
+
 from mantle.lattice.ice40.PLB import SB_LUT4, SB_CARRY, SB_DFF
-from magma.testing.utils import check_gold
 
 
 def test_sb_lut4():
@@ -22,9 +22,7 @@ def test_sb_lut4():
             io.I3
         )
 
-    m.compile("build/test_sb_lut4", Top, output="mlir-verilog")
-    assert check_gold(__file__, "test_sb_lut4.v")
-
+    check_ice40(__file__, 'test_sb_lut4', Top)
 
 def test_sb_carry():
 
@@ -38,8 +36,7 @@ def test_sb_carry():
         )
         io.CO @= SB_CARRY()(io.I0, io.I1, io.CI)
 
-    m.compile("build/test_sb_carry", Top, output="mlir-verilog")
-    assert check_gold(__file__, "test_sb_carry.v")
+    check_ice40(__file__, 'test_sb_carry', Top)
 
 
 def test_sb_dff():
@@ -52,5 +49,4 @@ def test_sb_dff():
         )
         io.Q @= SB_DFF()(io.D)
 
-    m.compile("build/test_sb_dff", Top, output="mlir-verilog")
-    assert check_gold(__file__, "test_sb_dff.v")
+    check_ice40(__file__, 'test_sb_dff', Top)

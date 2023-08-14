@@ -2254,9 +2254,8 @@
     },
     "SB_DFF": {
       "attributes": {
-        "blackbox": "00000000000000000000000000000001",
         "abc9_flop": "00000000000000000000000000000001",
-        "cells_not_processed": "00000000000000000000000000000001",
+        "blackbox": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:265.1-300.10"
       },
       "ports": {
@@ -5991,6 +5990,7 @@
     "SB_PLL40_CORE": {
       "attributes": {
         "blackbox": "00000000000000000000000000000001",
+        "cells_not_processed": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:2425.1-2453.10"
       },
       "parameter_default_values": {
@@ -9645,96 +9645,64 @@
       "attributes": {
         "hdlname": "\\Top",
         "top": "00000000000000000000000000000001",
-        "src": "build/test_pll.v:4.1-26.10"
+        "src": "build/test_sb_dff.v:4.1-15.10"
       },
       "ports": {
-        "REFERENCECLK": {
+        "C": {
           "direction": "input",
           "bits": [ 2 ]
         },
-        "RESETB": {
+        "D": {
           "direction": "input",
           "bits": [ 3 ]
         },
-        "BYPASS": {
-          "direction": "input",
+        "Q": {
+          "direction": "output",
           "bits": [ 4 ]
-        },
-        "PLLOUTCORE": {
-          "direction": "output",
-          "bits": [ 5 ]
-        },
-        "PLLOUTGLOBAL": {
-          "direction": "output",
-          "bits": [ 6 ]
         }
       },
       "cells": {
-        "SB_PLL40_CORE_inst0": {
+        "SB_DFF_inst0": {
           "hide_name": 0,
-          "type": "SB_PLL40_CORE",
+          "type": "SB_DFF",
           "parameters": {
-            "DIVF": "00000000000000000000000000111111",
-            "DIVQ": "00000000000000000000000000000111",
-            "DIVR": "00000000000000000000000000000000",
-            "FEEDBACK_PATH": "SIMPLE",
-            "FILTER_RANGE": "00000000000000000000000000000001",
-            "PLLOUT_SELECT": "GENCLK"
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "build/test_pll.v:19.5-25.4"
+            "src": "build/test_sb_dff.v:10.10-14.4"
           },
           "port_directions": {
-            "BYPASS": "input",
-            "PLLOUTCORE": "output",
-            "PLLOUTGLOBAL": "output",
-            "REFERENCECLK": "input",
-            "RESETB": "input"
+            "C": "input",
+            "D": "input",
+            "Q": "output"
           },
           "connections": {
-            "BYPASS": [ 4 ],
-            "PLLOUTCORE": [ 5 ],
-            "PLLOUTGLOBAL": [ 6 ],
-            "REFERENCECLK": [ 2 ],
-            "RESETB": [ 3 ]
+            "C": [ 2 ],
+            "D": [ 3 ],
+            "Q": [ 4 ]
           }
         }
       },
       "netnames": {
-        "BYPASS": {
-          "hide_name": 0,
-          "bits": [ 4 ],
-          "attributes": {
-            "src": "build/test_pll.v:7.10-7.16"
-          }
-        },
-        "PLLOUTCORE": {
-          "hide_name": 0,
-          "bits": [ 5 ],
-          "attributes": {
-            "src": "build/test_pll.v:8.10-8.20"
-          }
-        },
-        "PLLOUTGLOBAL": {
-          "hide_name": 0,
-          "bits": [ 6 ],
-          "attributes": {
-            "src": "build/test_pll.v:9.10-9.22"
-          }
-        },
-        "REFERENCECLK": {
+        "C": {
           "hide_name": 0,
           "bits": [ 2 ],
           "attributes": {
-            "src": "build/test_pll.v:5.10-5.22"
+            "src": "build/test_sb_dff.v:5.10-5.11"
           }
         },
-        "RESETB": {
+        "D": {
           "hide_name": 0,
           "bits": [ 3 ],
           "attributes": {
-            "src": "build/test_pll.v:6.10-6.16"
+            "src": "build/test_sb_dff.v:6.10-6.11"
+          }
+        },
+        "Q": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "build/test_sb_dff.v:7.10-7.11"
           }
         }
       }

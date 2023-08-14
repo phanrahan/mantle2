@@ -1,6 +1,7 @@
 import magma as m
+from check import check_ice40
+
 from mantle.lattice.ice40.DFF import DFF
-from magma.testing.utils import check_gold
 
 
 def test_dff():
@@ -11,7 +12,6 @@ def test_dff():
             D=m.In(m.Bit),
             Q=m.Out(m.Bit),
         )
-        io.Q @= DFF()(io.D)
+        io.Q @= DFF()(io.D, io.C)
 
-    m.compile("build/test_dff", Top, output="mlir-verilog")
-    assert check_gold(__file__, "test_dff.v")
+    check_ice40(__file__, 'test_dff', Top)

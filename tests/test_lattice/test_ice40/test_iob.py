@@ -1,6 +1,6 @@
 import pytest
 import magma as m
-from magma.testing.utils import check_gold
+from check import check_ice40
 
 from mantle.lattice.ice40.IOB import SB_IO
 
@@ -18,5 +18,5 @@ def test_sb_io():
         iob.PACKAGE_PIN @= io.PACKAGE_PIN
         io.D_OUT_0 @= iob.D_OUT_0
 
-    m.compile("build/test_sb_io", Top, output="mlir-verilog")
-    assert check_gold(__file__, "test_sb_io.v")
+    check_ice40(__file__, 'test_io', Top)
+

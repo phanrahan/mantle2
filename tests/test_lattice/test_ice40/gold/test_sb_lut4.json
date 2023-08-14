@@ -5028,9 +5028,8 @@
     },
     "SB_LUT4": {
       "attributes": {
-        "blackbox": "00000000000000000000000000000001",
         "abc9_lut": "00000000000000000000000000000001",
-        "cells_not_processed": "00000000000000000000000000000001",
+        "blackbox": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:177.1-225.10"
       },
       "parameter_default_values": {
@@ -5991,6 +5990,7 @@
     "SB_PLL40_CORE": {
       "attributes": {
         "blackbox": "00000000000000000000000000000001",
+        "cells_not_processed": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:2425.1-2453.10"
       },
       "parameter_default_values": {
@@ -9645,96 +9645,91 @@
       "attributes": {
         "hdlname": "\\Top",
         "top": "00000000000000000000000000000001",
-        "src": "build/test_pll.v:4.1-26.10"
+        "src": "build/test_sb_lut4.v:4.1-21.10"
       },
       "ports": {
-        "REFERENCECLK": {
+        "I0": {
           "direction": "input",
           "bits": [ 2 ]
         },
-        "RESETB": {
+        "I1": {
           "direction": "input",
           "bits": [ 3 ]
         },
-        "BYPASS": {
+        "I2": {
           "direction": "input",
           "bits": [ 4 ]
         },
-        "PLLOUTCORE": {
-          "direction": "output",
+        "I3": {
+          "direction": "input",
           "bits": [ 5 ]
         },
-        "PLLOUTGLOBAL": {
+        "O": {
           "direction": "output",
           "bits": [ 6 ]
         }
       },
       "cells": {
-        "SB_PLL40_CORE_inst0": {
+        "SB_LUT4_inst0": {
           "hide_name": 0,
-          "type": "SB_PLL40_CORE",
+          "type": "SB_LUT4",
           "parameters": {
-            "DIVF": "00000000000000000000000000111111",
-            "DIVQ": "00000000000000000000000000000111",
-            "DIVR": "00000000000000000000000000000000",
-            "FEEDBACK_PATH": "SIMPLE",
-            "FILTER_RANGE": "00000000000000000000000000000001",
-            "PLLOUT_SELECT": "GENCLK"
+            "LUT_INIT": "00000000000000001011111011101111"
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "build/test_pll.v:19.5-25.4"
+            "src": "build/test_sb_lut4.v:14.5-20.4"
           },
           "port_directions": {
-            "BYPASS": "input",
-            "PLLOUTCORE": "output",
-            "PLLOUTGLOBAL": "output",
-            "REFERENCECLK": "input",
-            "RESETB": "input"
+            "I0": "input",
+            "I1": "input",
+            "I2": "input",
+            "I3": "input",
+            "O": "output"
           },
           "connections": {
-            "BYPASS": [ 4 ],
-            "PLLOUTCORE": [ 5 ],
-            "PLLOUTGLOBAL": [ 6 ],
-            "REFERENCECLK": [ 2 ],
-            "RESETB": [ 3 ]
+            "I0": [ 2 ],
+            "I1": [ 3 ],
+            "I2": [ 4 ],
+            "I3": [ 5 ],
+            "O": [ 6 ]
           }
         }
       },
       "netnames": {
-        "BYPASS": {
-          "hide_name": 0,
-          "bits": [ 4 ],
-          "attributes": {
-            "src": "build/test_pll.v:7.10-7.16"
-          }
-        },
-        "PLLOUTCORE": {
-          "hide_name": 0,
-          "bits": [ 5 ],
-          "attributes": {
-            "src": "build/test_pll.v:8.10-8.20"
-          }
-        },
-        "PLLOUTGLOBAL": {
-          "hide_name": 0,
-          "bits": [ 6 ],
-          "attributes": {
-            "src": "build/test_pll.v:9.10-9.22"
-          }
-        },
-        "REFERENCECLK": {
+        "I0": {
           "hide_name": 0,
           "bits": [ 2 ],
           "attributes": {
-            "src": "build/test_pll.v:5.10-5.22"
+            "src": "build/test_sb_lut4.v:5.10-5.12"
           }
         },
-        "RESETB": {
+        "I1": {
           "hide_name": 0,
           "bits": [ 3 ],
           "attributes": {
-            "src": "build/test_pll.v:6.10-6.16"
+            "src": "build/test_sb_lut4.v:6.10-6.12"
+          }
+        },
+        "I2": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "build/test_sb_lut4.v:7.10-7.12"
+          }
+        },
+        "I3": {
+          "hide_name": 0,
+          "bits": [ 5 ],
+          "attributes": {
+            "src": "build/test_sb_lut4.v:8.10-8.12"
+          }
+        },
+        "O": {
+          "hide_name": 0,
+          "bits": [ 6 ],
+          "attributes": {
+            "src": "build/test_sb_lut4.v:9.10-9.11"
           }
         }
       }

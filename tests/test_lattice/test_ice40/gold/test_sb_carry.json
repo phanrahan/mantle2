@@ -2198,7 +2198,6 @@
     "SB_CARRY": {
       "attributes": {
         "blackbox": "00000000000000000000000000000001",
-        "cells_not_processed": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:228.1-260.10"
       },
       "ports": {
@@ -5991,6 +5990,7 @@
     "SB_PLL40_CORE": {
       "attributes": {
         "blackbox": "00000000000000000000000000000001",
+        "cells_not_processed": "00000000000000000000000000000001",
         "src": "/usr/local/bin/../share/yosys/ice40/cells_sim.v:2425.1-2453.10"
       },
       "parameter_default_values": {
@@ -9645,96 +9645,88 @@
       "attributes": {
         "hdlname": "\\Top",
         "top": "00000000000000000000000000000001",
-        "src": "build/test_pll.v:4.1-26.10"
+        "src": "build/test_sb_carry.v:4.1-18.10"
       },
       "ports": {
-        "REFERENCECLK": {
+        "I0": {
           "direction": "input",
           "bits": [ 2 ]
         },
-        "RESETB": {
+        "I1": {
           "direction": "input",
           "bits": [ 3 ]
         },
-        "BYPASS": {
+        "I2": {
           "direction": "input",
           "bits": [ 4 ]
         },
-        "PLLOUTCORE": {
-          "direction": "output",
+        "CI": {
+          "direction": "input",
           "bits": [ 5 ]
         },
-        "PLLOUTGLOBAL": {
+        "CO": {
           "direction": "output",
           "bits": [ 6 ]
         }
       },
       "cells": {
-        "SB_PLL40_CORE_inst0": {
+        "SB_CARRY_inst0": {
           "hide_name": 0,
-          "type": "SB_PLL40_CORE",
+          "type": "SB_CARRY",
           "parameters": {
-            "DIVF": "00000000000000000000000000111111",
-            "DIVQ": "00000000000000000000000000000111",
-            "DIVR": "00000000000000000000000000000000",
-            "FEEDBACK_PATH": "SIMPLE",
-            "FILTER_RANGE": "00000000000000000000000000000001",
-            "PLLOUT_SELECT": "GENCLK"
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "build/test_pll.v:19.5-25.4"
+            "src": "build/test_sb_carry.v:12.12-17.4"
           },
           "port_directions": {
-            "BYPASS": "input",
-            "PLLOUTCORE": "output",
-            "PLLOUTGLOBAL": "output",
-            "REFERENCECLK": "input",
-            "RESETB": "input"
+            "CI": "input",
+            "CO": "output",
+            "I0": "input",
+            "I1": "input"
           },
           "connections": {
-            "BYPASS": [ 4 ],
-            "PLLOUTCORE": [ 5 ],
-            "PLLOUTGLOBAL": [ 6 ],
-            "REFERENCECLK": [ 2 ],
-            "RESETB": [ 3 ]
+            "CI": [ 5 ],
+            "CO": [ 6 ],
+            "I0": [ 2 ],
+            "I1": [ 3 ]
           }
         }
       },
       "netnames": {
-        "BYPASS": {
-          "hide_name": 0,
-          "bits": [ 4 ],
-          "attributes": {
-            "src": "build/test_pll.v:7.10-7.16"
-          }
-        },
-        "PLLOUTCORE": {
+        "CI": {
           "hide_name": 0,
           "bits": [ 5 ],
           "attributes": {
-            "src": "build/test_pll.v:8.10-8.20"
+            "src": "build/test_sb_carry.v:8.10-8.12"
           }
         },
-        "PLLOUTGLOBAL": {
+        "CO": {
           "hide_name": 0,
           "bits": [ 6 ],
           "attributes": {
-            "src": "build/test_pll.v:9.10-9.22"
+            "src": "build/test_sb_carry.v:9.10-9.12"
           }
         },
-        "REFERENCECLK": {
+        "I0": {
           "hide_name": 0,
           "bits": [ 2 ],
           "attributes": {
-            "src": "build/test_pll.v:5.10-5.22"
+            "src": "build/test_sb_carry.v:5.10-5.12"
           }
         },
-        "RESETB": {
+        "I1": {
           "hide_name": 0,
           "bits": [ 3 ],
           "attributes": {
-            "src": "build/test_pll.v:6.10-6.16"
+            "src": "build/test_sb_carry.v:6.10-6.12"
+          }
+        },
+        "I2": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "build/test_sb_carry.v:7.10-7.12"
           }
         }
       }
